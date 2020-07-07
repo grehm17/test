@@ -9,10 +9,10 @@ pipeline {
 				 GIT_COMMIT=bat(returnStdout: true, script: 'git rev-parse --short --names-only HEAD')
 				 
 				 list = GIT_PREVIOUS_COMMIT.readLines()
-				 GIT_PREVIOUS_COMMIT = list[1]
+				 GIT_PREVIOUS_COMMIT = list[2]
 				 
 				 list = GIT_COMMIT.readLines()
-				 GIT_COMMIT = list[1]
+				 GIT_COMMIT = list[2]
 				 
 				 println(GIT_PREVIOUS_COMMIT)
 			  println(GIT_COMMIT)
