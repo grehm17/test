@@ -14,9 +14,10 @@ pipeline {
 				 list = GIT_COMMIT.readLines()
 				 GIT_COMMIT = list[2]
 				 
-				 println(GIT_PREVIOUS_COMMIT)
-			  println(GIT_COMMIT)
-             
+				 changedFiles = bat(returnStdout: true, script: 'git diff --name-only ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT}').trim()
+				 
+				 println(changedFiles)
+				
             }
         }}
         stage('Test') {
