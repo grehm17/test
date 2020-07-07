@@ -5,8 +5,8 @@ pipeline {
         stage('Build') {
             steps {
 				script{
-				 GIT_PREVIOUS_COMMIT=$(git rev-parse --short "HEAD^")
-				 GIT_COMMIT=$(git rev-parse --short HEAD)
+				 GIT_PREVIOUS_COMMIT=bat(returnStdout: true, script: 'git rev-parse --short "HEAD^"')
+				 GIT_COMMIT=bat(returnStdout: true, script: 'git rev-parse --short HEAD')
               changedFiles = bat(returnStdout: true, script: 'git diff --name-only $GIT_PREVIOUS_COMMIT $GIT_COMMIT').trim()
 			  println(changedFiles)
              
