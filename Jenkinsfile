@@ -60,5 +60,5 @@ def moveToTemp(String path){
 def getDependencies(String path){
 	def file = new File(WORKSPACE+"/"+path+"/.project") 
 	def xml = new XmlParser().parseText(file.text)
-	println xml.projectDescription
+	xml.getAt("projects").each{println it.value()}
 }
