@@ -21,7 +21,7 @@ pipeline {
 				 def pathPart
 				 def hasNext
 				 list.each {if (it =~ /ADP/) {
-					subList = toList(it.split("/"))
+					subList = it.split("/").toList()
 					hasNext = true
 					while(hasNext){
 						pathPart = subList.last()
