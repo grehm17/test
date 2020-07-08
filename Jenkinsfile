@@ -36,7 +36,7 @@ pipeline {
 				 }
 				}
 				Set depSet
-				adpMap.each{entry -> depSet = depSet + getDependencies(entry.key)}
+				adpMap.each{entry -> depSet + getDependencies(entry.key)}
 				depSet.each{println it}
             }
         }}
@@ -66,8 +66,8 @@ def getDependencies(String path){
 	def subPath
 	xml.getAt("projects").getAt("project").each{
 		subPath = WORKSPACE+"/src/src/LIB/"+it.value().toString().replace("[","").replace("]","")
-		depSet = depSet + subPath
-		depSet = depSet + getDependencies(subPath)
+		depSet + subPath
+		depSet + getDependencies(subPath)
 	}
 	return depSet
 }
