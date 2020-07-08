@@ -40,6 +40,9 @@ pipeline {
 				adpMap.each{entry -> subMap = subMap + getDependencies(entry.key)}
 				adpMap.each{entry -> moveToTemp(entry.key)}
 				subMap.each{entry -> moveToTemp(entry.key)}
+				
+				createBar(adpMap)
+				deployBar()
             }
         }}
         stage('Test') {
@@ -79,4 +82,22 @@ def getDependencies(String path){
 		depMap = depMap + getDependencies(subPath)
 	}}
 	return depMap
+}
+
+def createBar(Map adpMap){
+	def workspace = WORKSPACE
+	def appName
+	adpMap.each{
+		appName = it.key.split("/").last()
+		bat script: "\"C:/Program Files/IBM/IIB/10.0.0.17/server/bin/mqsiprofile\" && mqsicreatebar -data \"${workspace}/../tempWorkspace\" -b ${appName}.bar -a ${appName}"
+	}
+}
+
+def deployBar(Map adpMap){
+	def workspace = WORKSPACE
+	def appName
+	adpMap.each{
+		appName = it.key.split("/").last()
+		bat script: "\"C:/Program Files/IBM/IIB/10.0.0.17/server/bin/mqsiprofile\" && mqsideploy TestNode -e default -a \"${workspace}/../tempWorkspace/${appName}.bar\""
+	}
 }
