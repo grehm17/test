@@ -38,7 +38,8 @@ pipeline {
 				}
 				Set depSet
 				adpMap.each{entry -> subMap = subMap + getDependencies(entry.key)}
-				subMap.each{println it.key}
+				adpMap.each{entry -> moveToTemp(entry.key)}
+				subMap.each{entry -> moveToTemp(entry.key)}
             }
         }}
         stage('Test') {
@@ -56,8 +57,10 @@ pipeline {
 
 def moveToTemp(String path){
 	bat script: "Xcopy ${path} ../tempWorkspace /i /e /y"
-	def javaPath = path+"../"+path.split("/").last()+".Java"
-	bat script: "If Exist ${javaPath} Xcopy ${javaPath} ../tempWorkspace /i /e /y"
+	if(path !=~ /.Java/){
+		def javaPath = path+"../"+path.split("/").last()+".Java"
+		bat script: "If Exist ${javaPath} Xcopy ${javaPath} ../tempWorkspace /i /e /y"
+	}
 }
 
 def getDependencies(String path){
