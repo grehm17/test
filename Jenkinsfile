@@ -26,10 +26,10 @@ pipeline {
 					while(hasNext){
 						pathPart = subList.last()
 						
-						if(! pathPart =~ /Adp/){
-							subList.removeLast()
+						if(pathPart =~ /Adp/){
+							hasNext=false	
 						}else{
-							hasNext=false
+							subList.removeLast()
 						}
 					}
 					adpMap.put(subList.join("/"),"1")
