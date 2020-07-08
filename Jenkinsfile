@@ -37,7 +37,7 @@ pipeline {
 				 }
 				}
 				Set depSet
-				adpMap.each{entry -> subMap + getDependencies(entry.key)}
+				adpMap.each{entry -> subMap = subMap + getDependencies(entry.key)}
 				subMap.each{println it.key}
             }
         }}
