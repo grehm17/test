@@ -64,10 +64,12 @@ def getDependencies(String path){
 	def file = new File(WORKSPACE+"/"+path+"/.project") 
 	def xml = new XmlParser().parseText(file.text)
 	def subPath
-	xml.getAt("projects").getAt("project").each{
+	def depList = xml.getAt("projects").getAt("project")
+	if (depList.size()>0){
+	depList.each{
 		subPath = "/src/src/LIB/"+it.value().toString().replace("[","").replace("]","")
 		depSet + subPath
 		depSet + getDependencies(subPath)
-	}
+	}}
 	return depSet
 }
