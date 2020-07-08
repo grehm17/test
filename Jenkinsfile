@@ -17,7 +17,7 @@ pipeline {
 				 changedFiles = bat(returnStdout: true, script: "git diff --name-only ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT}").trim()
 				 def adpMap
 				 
-				 changedFiles.eachLine {line, count -> if (count >= 2 && line =~ /ADP/) {adpMap.put(line,true)}
+				 changedFiles.eachLine {if (it =~ /ADP/) {adpMap.put(it,"1")}
 				}
 				adpMap.each{entry -> println entry.key}
             }
