@@ -63,11 +63,11 @@ def getDependencies(String path){
 	Set depSet
 	def file = new File(WORKSPACE+"/"+path+"/.project") 
 	def xml = new XmlParser().parseText(file.text)
-	def path
+	def subPath
 	xml.getAt("projects").getAt("project").each{
-		path = WORKSPACE+"/src/src/LIB/"+it.value().replace("[").replace("]")
-		depSet = depSet + path
-		depSet = depSet + getDependencies(path)
+		subPath = WORKSPACE+"/src/src/LIB/"+it.value().replace("[").replace("]")
+		depSet = depSet + subPath
+		depSet = depSet + getDependencies(subPath)
 	}
 	return depSet
 }
