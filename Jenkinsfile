@@ -65,7 +65,7 @@ def getDependencies(String path){
 	def xml = new XmlParser().parseText(file.text)
 	def subPath
 	xml.getAt("projects").getAt("project").each{
-		subPath = WORKSPACE+"/src/src/LIB/"+it.value().toString().replace("[","").replace("]","")
+		subPath = "/src/src/LIB/"+it.value().toString().replace("[","").replace("]","")
 		depSet + subPath
 		depSet + getDependencies(subPath)
 	}
