@@ -57,10 +57,12 @@ pipeline {
 
 def moveToTemp(String path){
 	def workspace = WORKSPACE
-	bat script: "Xcopy ${workspace}/${path} ${workspace}/../tempWorkspace /i /e /y"
+	def folder = path.split("/").last()
+	bat script: "Xcopy \"${workspace}/${path}\" \"${workspace}/../tempWorkspace/${folder}\" /i /e /y"
 	if(path !=~ /.Java/){
 		def javaPath = path+"../"+path.split("/").last()+".Java"
-		bat script: "If Exist ${workspace}/${javaPath} Xcopy ${workspace}/${javaPath} ${workspace}/../tempWorkspace /i /e /y"
+		folder = javaPath.split("/").last()
+		bat script: "If Exist \"${workspace}/${javaPath}\" Xcopy \"${workspace}/${javaPath}\" \"${workspace}/../tempWorkspace/${folder}\" /i /e /y"
 	}
 }
 
