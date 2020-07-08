@@ -24,7 +24,7 @@ pipeline {
 					subList = it.split("/")
 					hasNext = true
 					while(hasNext){
-						pathPart = subList.last()
+						pathPart = subList[subList.length-1]
 						
 						if(pathPart =~ /Adp/){
 							hasNext=false	
