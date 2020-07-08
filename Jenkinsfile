@@ -29,7 +29,7 @@ pipeline {
 						if(pathPart =~ /Adp./){
 							hasNext=false	
 						}else{
-							subList.remove(subList.length-1)
+							subList.remove(subList.length()-1)
 						}
 					}
 					adpMap.put(subList.join("/"),"1")
