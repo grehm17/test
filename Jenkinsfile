@@ -16,6 +16,7 @@ pipeline {
 				 
 				 changedFiles = bat(returnStdout: true, script: "git diff --name-only ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT}").trim()
 				 def adpMap = [:]
+				 def subMap = [:]
 				 list = changedFiles.readLines()
 				 def subList
 				 def pathPart
@@ -36,8 +37,8 @@ pipeline {
 				 }
 				}
 				Set depSet
-				adpMap.each{entry -> depSet + getDependencies(entry.key)}
-				depSet.each{println it}
+				adpMap.each{entry -> subMap + getDependencies(entry.key)}
+				subMap.each{println it.key}
             }
         }}
         stage('Test') {
@@ -60,7 +61,7 @@ def moveToTemp(String path){
 }
 
 def getDependencies(String path){
-	Set depSet
+	def depMap  = [:]
 	def file = new File(WORKSPACE+"/"+path+"/.project") 
 	def xml = new XmlParser().parseText(file.text)
 	def subPath
@@ -68,8 +69,8 @@ def getDependencies(String path){
 	if (depList.size()>0){
 	depList.each{
 		subPath = "/src/src/LIB/"+it.value().toString().replace("[","").replace("]","")
-		depSet + subPath
-		depSet + getDependencies(subPath)
+		depMap.put(WORKSPACE+"/"+subPath,"1")
+		depMap = depMap + getDependencies(subPath)
 	}}
-	return depSet
+	return depMap
 }
