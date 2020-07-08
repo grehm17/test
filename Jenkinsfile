@@ -35,7 +35,9 @@ pipeline {
 					adpMap.put(subList.join("/"),"1")
 				 }
 				}
-				adpMap.each{entry -> getDependencies(entry.key)}
+				Set depSet
+				adpMap.each{entry -> depSet = depSet + getDependencies(entry.key)}
+				depSet.each{println it}
             }
         }}
         stage('Test') {
@@ -58,7 +60,14 @@ def moveToTemp(String path){
 }
 
 def getDependencies(String path){
+	Set depSet
 	def file = new File(WORKSPACE+"/"+path+"/.project") 
 	def xml = new XmlParser().parseText(file.text)
-	xml.getAt("projects").getAt("project").each{println it.value()}
+	def path
+	xml.getAt("projects").getAt("project").each{
+		path = WORKSPACE+"/src/src/LIB/"+it.value().replace("[").replace("]")
+		depSet = depSet + path
+		depSet = depSet + getDependencies(path)
+	}
+	return depSet
 }
