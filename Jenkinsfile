@@ -21,11 +21,18 @@ pipeline {
 				 def pathPart
 				 def hasNext
 				 list.each {if (it =~ /ADP/) {
-					subList = it.split("/")
-					subList.removeLast()
-					subList.each{echo it}
+					subList = toList(it.split("/"))
 					hasNext = true
-					
+					while(hasNext){
+						pathPart = subList.last()
+						
+						if(pathPart =~ /Adp./){
+							hasNext=false	
+						}else{
+							subList.removeLast()
+						}
+					}
+					adpMap.put(subList.join("/"),"1")
 				 }
 				}
 				adpMap.each{entry -> println entry.key}
