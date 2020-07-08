@@ -56,10 +56,11 @@ pipeline {
 }
 
 def moveToTemp(String path){
-	bat script: "Xcopy ${path}/../tempWorkspace /i /e /y"
+	def workspace = WORKSPACE
+	bat script: "Xcopy ${workspace}/${path} ${workspace}/../tempWorkspace /i /e /y"
 	if(path !=~ /.Java/){
 		def javaPath = path+"../"+path.split("/").last()+".Java"
-		bat script: "If Exist ${javaPath} Xcopy ${javaPath}/../tempWorkspace /i /e /y"
+		bat script: "If Exist ${workspace}/${javaPath} Xcopy ${workspace}/${javaPath} ${workspace}/../tempWorkspace /i /e /y"
 	}
 }
 
@@ -72,7 +73,7 @@ def getDependencies(String path){
 	if (depList.size()>0){
 	depList.each{
 		subPath = "/src/src/LIB/"+it.value().toString().replace("[","").replace("]","")
-		depMap.put(WORKSPACE+"/"+subPath,"1")
+		depMap.put(WORKSPACE+subPath,"1")
 		depMap = depMap + getDependencies(subPath)
 	}}
 	return depMap
