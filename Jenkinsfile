@@ -35,7 +35,7 @@ pipeline {
 					adpMap.put(subList.join("/"),"1")
 				 }
 				}
-				adpMap.each{entry -> println entry.key}
+				adpMap.each{entry -> getDependencies(entry.key)}
             }
         }}
         stage('Test') {
@@ -49,4 +49,16 @@ pipeline {
             }
         }
     }
+}
+
+def moveToTemp(String path){
+	bat script: "Xcopy ${path} ../tempWorkspace /i /e /y"
+	def javaPath = path+"../"+path.split("/").last()+".Java"
+	bat script: "If Exist ${javaPath} Xcopy ${javaPath} ../tempWorkspace /i /e /y"
+}
+
+def getDependencies(String path){
+	def file = new File path+".project" 
+	def xml = new XmlParser.parseText(file)
+	xml.projectDescription.projects.project.each{println it}
 }
