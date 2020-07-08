@@ -27,7 +27,7 @@ pipeline {
 						pathPart = subList.last()
 						
 						if(! pathPart =~ /Adp/){
-							subList.removeElement(pathPart)
+							subList.removeLast()
 						}else{
 							hasNext=false
 						}
