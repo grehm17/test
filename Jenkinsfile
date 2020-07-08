@@ -33,7 +33,7 @@ pipeline {
 							subList.remove(subList.size()-1)
 						}
 					}
-					adpMap.put(subList.join("/"),"1")
+					adpMap.put(WORKSPACE + "/"+subList.join("/"),"1")
 				 }
 				}
 				Set depSet
@@ -68,14 +68,14 @@ def moveToTemp(String path){
 
 def getDependencies(String path){
 	def depMap  = [:]
-	def file = new File(WORKSPACE+"/"+path+"/.project") 
+	def file = new File(path+"/.project") 
 	def xml = new XmlParser().parseText(file.text)
 	def subPath
 	def depList = xml.getAt("projects").getAt("project")
 	if (depList.size()>0){
 	depList.each{
-		subPath = "/src/src/LIB/"+it.value().toString().replace("[","").replace("]","")
-		depMap.put(WORKSPACE+subPath,"1")
+		subPath = WORKSPACE+"/src/src/LIB/"+it.value().toString().replace("[","").replace("]","")
+		depMap.put(subPath,"1")
 		depMap = depMap + getDependencies(subPath)
 	}}
 	return depMap
