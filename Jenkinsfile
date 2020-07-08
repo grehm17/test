@@ -56,7 +56,7 @@ pipeline {
 }
 
 def moveToTemp(String path){
-	bat script: "Xcopy ${path} ../tempWorkspace /i /e /y"
+	bat script: "Xcopy ${path}../tempWorkspace /i /e /y"
 	if(path !=~ /.Java/){
 		def javaPath = path+"../"+path.split("/").last()+".Java"
 		bat script: "If Exist ${javaPath} Xcopy ${javaPath}/../tempWorkspace /i /e /y"
