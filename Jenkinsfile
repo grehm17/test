@@ -15,7 +15,7 @@ pipeline {
 				 GIT_COMMIT = list[2]
 				 
 				 changedFiles = bat(returnStdout: true, script: "git diff --name-only ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT}").trim()
-				 def adpMap
+				 def adpMap = ["none":"0"]
 				 list = changedFiles.readLines()
 				 list.each {if (it =~ /ADP/) {adpMap.put(it,"1")}
 				}
