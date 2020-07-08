@@ -22,6 +22,7 @@ pipeline {
 				 def hasNext
 				 list.each {if (it =~ /ADP/) {
 					subList = it.split("/")
+					subList.removeLast()
 					subList.each{echo it}
 					hasNext = true
 					
