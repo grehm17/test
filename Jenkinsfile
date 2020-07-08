@@ -32,7 +32,7 @@ pipeline {
 							hasNext=false
 						}
 					}
-					adpMap.put(subList.join("/"))
+					adpMap.put(subList.join("/"),"1")
 				 }
 				}
 				adpMap.each{entry -> println entry.key}
